@@ -1,0 +1,285 @@
+Microsoft Windows [Version 10.0.26200.8524]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Bhanu Kiran>mongosh "mongodb+srv://theghostofchernobyl1_db_user:@edushieldx-cluster.2u3bpk2.mongodb.net/"
+Current Mongosh Log ID: 6ae44f932a98b287da84c63b
+Connecting to:          mongodb+srv://<credentials>@edushieldx-cluster.2u3bpk2.mongodb.net/?appName=mongosh+2.10.0
+Using MongoDB:          8.0.34
+Using Mongosh:          2.10.0
+mongosh 2.14.0 is available for download: https://www.mongodb.com/try/download/shell
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+
+Atlas atlas-13bbgo-shard-0 [primary] test>// DAY 2 — REPLICATION INSPECTION, READ PREFERENCE, WRITE CONCERN
+
+
+Atlas atlas-13bbgo-shard-0 [primary] test> print("Atlas replica-set status (read-only):");
+Atlas replica-set status (read-only):
+
+Atlas atlas-13bbgo-shard-0 [primary] test> try { printjson(rs.status()); } catch(e) { print("rs.status unavailable: " + e.message); }
+{
+  set: 'atlas-13bbgo-shard-0',
+  date: ISODate('2026-10-30T08:11:04.586Z'),
+  myState: 1,
+  term: Long('332'),
+  syncSourceHost: '',
+  syncSourceId: -1,
+  heartbeatIntervalMillis: Long('2000'),
+  majorityVoteCount: 2,
+  writeMajorityCount: 2,
+  votingMembersCount: 3,
+  writableVotingMembersCount: 3,
+  optimes: {
+    lastCommittedOpTime: {
+      ts: Timestamp({ t: 1793347864, i: 4 }),
+      t: Long('332')
+    },
+    lastCommittedWallTime: ISODate('2026-10-30T08:11:04.489Z'),
+    readConcernMajorityOpTime: {
+      ts: Timestamp({ t: 1793347864, i: 4 }),
+      t: Long('332')
+    },
+    appliedOpTime: {
+      ts: Timestamp({ t: 1793347864, i: 4 }),
+      t: Long('332')
+    },
+    durableOpTime: {
+      ts: Timestamp({ t: 1793347864, i: 4 }),
+      t: Long('332')
+    },
+    writtenOpTime: {
+      ts: Timestamp({ t: 1793347864, i: 4 }),
+      t: Long('332')
+    },
+    lastAppliedWallTime: ISODate('2026-10-30T08:11:04.489Z'),
+    lastDurableWallTime: ISODate('2026-10-30T08:11:04.489Z'),
+    lastWrittenWallTime: ISODate('2026-10-30T08:11:04.489Z')
+  },
+  lastStableRecoveryTimestamp: Timestamp({ t: 1793347815, i: 1 }),
+  electionCandidateMetrics: {
+    lastElectionReason: 'stepUpRequestSkipDryRun',
+    lastElectionDate: ISODate('2026-10-27T16:09:34.861Z'),
+    electionTerm: Long('332'),
+    lastCommittedOpTimeAtElection: {
+      ts: Timestamp({ t: 1793117374, i: 19 }),
+      t: Long('331')
+    },
+    lastSeenWrittenOpTimeAtElection: {
+      ts: Timestamp({ t: 1793117374, i: 20 }),
+      t: Long('331')
+    },
+    lastSeenOpTimeAtElection: {
+      ts: Timestamp({ t: 1793117374, i: 20 }),
+      t: Long('331')
+    },
+    numVotesNeeded: 2,
+    priorityAtElection: 7,
+    electionTimeoutMillis: Long('5000'),
+    priorPrimaryMemberId: 1,
+    numCatchUpOps: Long('0'),
+    newTermStartDate: ISODate('2026-10-27T16:09:34.934Z'),
+    wMajorityWriteAvailabilityDate: ISODate('2026-10-27T16:09:35.033Z')
+  },
+  members: [
+    {
+      _id: 0,
+      name: 'ac-fpexe8x-shard-00-00.2u3bpk2.mongodb.net:27017',
+      health: 1,
+      state: 2,
+      stateStr: 'SECONDARY',
+      uptime: 230510,
+      optime: {
+        ts: Timestamp({ t: 1793347863, i: 5 }),
+        t: Long('332')
+      },
+      optimeDurable: {
+        ts: Timestamp({ t: 1793347863, i: 5 }),
+        t: Long('332')
+      },
+      optimeWritten: {
+        ts: Timestamp({ t: 1793347863, i: 5 }),
+        t: Long('332')
+      },
+      optimeDate: ISODate('2026-10-30T08:11:03.000Z'),
+      optimeDurableDate: ISODate('2026-10-30T08:11:03.000Z'),
+      optimeWrittenDate: ISODate('2026-10-30T08:11:03.000Z'),
+      lastAppliedWallTime: ISODate('2026-10-30T08:11:04.489Z'),
+      lastDurableWallTime: ISODate('2026-10-30T08:11:04.489Z'),
+      lastWrittenWallTime: ISODate('2026-10-30T08:11:04.489Z'),
+      lastHeartbeat: ISODate('2026-10-30T08:11:04.314Z'),
+      lastHeartbeatRecv: ISODate('2026-10-30T08:11:02.913Z'),
+      pingMs: Long('0'),
+      lastHeartbeatMessage: '',
+      syncSourceHost: 'ac-fpexe8x-shard-00-02.2u3bpk2.mongodb.net:27017',
+      syncSourceId: 2,
+      infoMessage: '',
+      configVersion: 372,
+      configTerm: 332
+    },
+    {
+      _id: 1,
+      name: 'ac-fpexe8x-shard-00-01.2u3bpk2.mongodb.net:27017',
+      health: 1,
+      state: 2,
+      stateStr: 'SECONDARY',
+      uptime: 230397,
+      optime: {
+        ts: Timestamp({ t: 1793347863, i: 5 }),
+        t: Long('332')
+      },
+      optimeDurable: {
+        ts: Timestamp({ t: 1793347863, i: 5 }),
+        t: Long('332')
+      },
+      optimeWritten: {
+        ts: Timestamp({ t: 1793347863, i: 5 }),
+        t: Long('332')
+      },
+      optimeDate: ISODate('2026-10-30T08:11:03.000Z'),
+      optimeDurableDate: ISODate('2026-10-30T08:11:03.000Z'),
+      optimeWrittenDate: ISODate('2026-10-30T08:11:03.000Z'),
+      lastAppliedWallTime: ISODate('2026-10-30T08:11:04.489Z'),
+      lastDurableWallTime: ISODate('2026-10-30T08:11:04.489Z'),
+      lastWrittenWallTime: ISODate('2026-10-30T08:11:04.489Z'),
+      lastHeartbeat: ISODate('2026-10-30T08:11:03.953Z'),
+      lastHeartbeatRecv: ISODate('2026-10-30T08:11:04.188Z'),
+      pingMs: Long('0'),
+      lastHeartbeatMessage: '',
+      syncSourceHost: 'ac-fpexe8x-shard-00-02.2u3bpk2.mongodb.net:27017',
+      syncSourceId: 2,
+      infoMessage: '',
+      configVersion: 372,
+      configTerm: 332
+    },
+    {
+      _id: 2,
+      name: 'ac-fpexe8x-shard-00-02.2u3bpk2.mongodb.net:27017',
+      health: 1,
+      state: 1,
+      stateStr: 'PRIMARY',
+      uptime: 230577,
+      optime: {
+        ts: Timestamp({ t: 1793347864, i: 4 }),
+        t: Long('332')
+      },
+      optimeDate: ISODate('2026-10-30T08:11:04.000Z'),
+      optimeWritten: {
+        ts: Timestamp({ t: 1793347864, i: 4 }),
+        t: Long('332')
+      },
+      optimeWrittenDate: ISODate('2026-10-30T08:11:04.000Z'),
+      lastAppliedWallTime: ISODate('2026-10-30T08:11:04.489Z'),
+      lastDurableWallTime: ISODate('2026-10-30T08:11:04.489Z'),
+      lastWrittenWallTime: ISODate('2026-10-30T08:11:04.489Z'),
+      syncSourceHost: '',
+      syncSourceId: -1,
+      infoMessage: '',
+      electionTime: Timestamp({ t: 1793117374, i: 21 }),
+      electionDate: ISODate('2026-10-27T16:09:34.000Z'),
+      configVersion: 372,
+      configTerm: 332,
+      self: true,
+      lastHeartbeatMessage: ''
+    }
+  ],
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1793347864, i: 4 }),
+    signature: {
+      hash: Binary.createFromBase64('AiaFLxD11UK6LIo9r+GpzsYdp28=', 0),
+      keyId: Long('7654947660796788740')
+    }
+  },
+  operationTime: Timestamp({ t: 1793347864, i: 4 })
+}
+
+Atlas atlas-13bbgo-shard-0 [primary] test> print("Replica-set config (read-only):");
+Replica-set config (read-only):
+
+Atlas atlas-13bbgo-shard-0 [primary] test> try { printjson(rs.conf()); } catch(e) { print("rs.conf unavailable: " + e.message); }
+rs.conf unavailable: (Unauthorized) not authorized on admin to execute command { replSetGetConfig: 1, lsid: { id: {4 [61 211 151 110 163 19 70 184190 185 144 130 200 181 233 114]} }, $clusterTime: { clusterTime: {1793347864 4}, signature: { hash: {0 [2 38 133 47 16 245 213 66 186 44 138 61 175 225 169 206 198 29 167 111]}, keyId: 7654947660796788736.000000 } }, $db: "admin" }
+
+Atlas atlas-13bbgo-shard-0 [primary] test> print("hello/topology information:");
+hello/topology information:
+
+Atlas atlas-13bbgo-shard-0 [primary] test> try { printjson(db.adminCommand({hello:1})); } catch(e) { print("hello unavailable: " + e.message); }
+{
+  topologyVersion: {
+    processId: ObjectId('6ae0cc67027be0caf9059f8d'),
+    counter: Long('12')
+  },
+  hosts: [
+    'ac-fpexe8x-shard-00-00.2u3bpk2.mongodb.net:27017',
+    'ac-fpexe8x-shard-00-01.2u3bpk2.mongodb.net:27017',
+    'ac-fpexe8x-shard-00-02.2u3bpk2.mongodb.net:27017'
+  ],
+  setName: 'atlas-13bbgo-shard-0',
+  setVersion: 372,
+  isWritablePrimary: true,
+  secondary: false,
+  primary: 'ac-fpexe8x-shard-00-02.2u3bpk2.mongodb.net:27017',
+  tags: {
+    region: 'AP_SOUTH_1',
+    workloadType: 'OPERATIONAL',
+    diskState: 'READY',
+    availabilityZone: 'aps1-az2',
+    cacheState: 'READY',
+    provider: 'AWS',
+    nodeType: 'ELECTABLE'
+  },
+  me: 'ac-fpexe8x-shard-00-02.2u3bpk2.mongodb.net:27017',
+  electionId: ObjectId('7fffffff000000000000014c'),
+  lastWrite: {
+    opTime: {
+      ts: Timestamp({ t: 1793347913, i: 1 }),
+      t: Long('332')
+    },
+    lastWriteDate: ISODate('2026-10-30T08:11:53.000Z'),
+    majorityOpTime: {
+      ts: Timestamp({ t: 1793347913, i: 1 }),
+      t: Long('332')
+    },
+    majorityWriteDate: ISODate('2026-10-30T08:11:53.000Z')
+  },
+  maxBsonObjectSize: 16777216,
+  maxMessageSizeBytes: 48000000,
+  maxWriteBatchSize: 100000,
+  localTime: ISODate('2026-10-30T08:11:53.310Z'),
+  logicalSessionTimeoutMinutes: 30,
+  connectionId: 115240,
+  minWireVersion: 0,
+  maxWireVersion: 25,
+  readOnly: false,
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1793347913, i: 1 }),
+    signature: {
+      hash: Binary.createFromBase64('psa9WQpdCSmjYcMSlts84WGQgb8=', 0),
+      keyId: Long('7654947660796788740')
+    }
+  },
+  operationTime: Timestamp({ t: 1793347913, i: 1 })
+}
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.writeConcernDemo.insertOne({demoId:"WC-001",note:"Majority write concern example",createdAt:new Date()},{writeConcern:{w:"majority",wtimeout:5000}});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae4517c2a98b287da84c63d')
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> try {
+|   d.getMongo().setReadPref("secondaryPreferred");
+|   print("Read using secondaryPreferred (topology may route according to availability):");
+|   printjson(d.students.find({studentId:"ESX-STU-001"}).toArray());
+|   d.getMongo().setReadPref("primary");
+| } catch(e) { print("Read preference demo unavailable: " + e.message); }
+|
+Read using secondaryPreferred (topology may route according to availability):
+[]
+
+
+
+
+
+
+

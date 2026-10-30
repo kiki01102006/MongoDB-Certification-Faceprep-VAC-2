@@ -1,0 +1,203 @@
+Microsoft Windows [Version 10.0.26200.8524]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Bhanu Kiran>mongosh "mongodb+srv://theghostofchernobyl1_db_user:@edushieldx-cluster.2u3bpk2.mongodb.net/"
+Current Mongosh Log ID: 6ae44f932a98b287da84c63b
+Connecting to:          mongodb+srv://<credentials>@edushieldx-cluster.2u3bpk2.mongodb.net/?appName=mongosh+2.10.0
+Using MongoDB:          8.0.34
+Using Mongosh:          2.10.0
+mongosh 2.14.0 is available for download: https://www.mongodb.com/try/download/shell
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+
+Atlas atlas-13bbgo-shard-0 [primary] test> // DAY 5 — EMBEDDING, REFERENCING, RELATIONSHIPS
+
+Atlas atlas-13bbgo-shard-0 [primary] test> // One-to-one embedding
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.embeddedStudents.updateOne({studentId:"ESX-EMB-001"},{$set:{studentId:"ESX-EMB-001",name:"Meera Joshi",contact:{email:"meera.demo@example.com",city:"Jaipur"}}},{upsert:true});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae4535c027be0caf905b88e'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> // One-to-one referencing
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.referenceStudents.updateOne({studentId:"ESX-REF-001"},{$set:{studentId:"ESX-REF-001",name:"Ishaan Gupta"}},{upsert:true});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae4536d027be0caf905b88f'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> const rs1=d.referenceStudents.findOne({studentId:"ESX-REF-001"});
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.identityProfiles.updateOne({studentId:rs1._id},{$set:{studentId:rs1._id,verificationType:"INSTITUTION_ID",verificationStatus:"PENDING",referenceCode:"DEMO-VERIFY-001"}},{upsert:true});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae4538a027be0caf905b898'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> d.identityProfiles.createIndex({studentId:1},{unique:true,name:"uq_identity_student"});
+uq_identity_student
+Atlas atlas-13bbgo-shard-0 [primary] test> // One-to-many referencing
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.oneToManyStudents.updateOne({studentId:"ESX-1M-001"},{$set:{studentId:"ESX-1M-001",name:"Riya Kapoor"}},{upsert:true});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae453a8027be0caf905b89a'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> const s1m=d.oneToManyStudents.findOne({studentId:"ESX-1M-001"});
+
+Atlas atlas-13bbgo-shard-0 [primary] test> [
+|  {courseCode:"MONGO-101",courseName:"MongoDB",semester:5},
+|  {courseCode:"JAVA-201",courseName:"Java",semester:5},
+|  {courseCode:"NET-301",courseName:"Computer Networks",semester:5}
+| ].forEach(x=>d.oneToManyEnrollments.updateOne({studentId:s1m._id,courseCode:x.courseCode},{$set:{studentId:s1m._id,...x}},{upsert:true}));
+
+Atlas atlas-13bbgo-shard-0 [primary] test> // Many-to-many using a junction collection
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.manyStudents.updateOne({studentId:"ESX-MM-001"},{$set:{studentId:"ESX-MM-001",name:"Priya Singh"}},{upupsert:true});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae453ea027be0caf905b8a5'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> d.manyStudents.updateOne({studentId:"ESX-MM-002"},{$set:{studentId:"ESX-MM-002",name:"Kabir Jain"}},{upsupsert:true});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae453f5027be0caf905b8a8'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> d.practiceCourses.updateOne({courseCode:"DB-101"},{$set:{courseCode:"DB-101",courseName:"Database Systems"}},{upsert:true});
+|
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae45405027be0caf905b8ac'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> d.practiceCourses.updateOne({courseCode:"CYBER-201"},{$set:{courseCode:"CYBER-201",courseName:"Cybersecurity"}},{upsert:true});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae4540d027be0caf905b8ad'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> const p=d.manyStudents.findOne({studentId:"ESX-MM-001"}), k=d.manyStudents.findOne({studentId:"ESX-MM-002"});
+
+Atlas atlas-13bbgo-shard-0 [primary] test> const c1=d.practiceCourses.findOne({courseCode:"DB-101"}), c2=d.practiceCourses.findOne({courseCode:"CYBER-201"});
+
+Atlas atlas-13bbgo-shard-0 [primary] test> [{studentId:p._id,courseId:c1._id},{studentId:p._id,courseId:c2._id},{studentId:k._id,courseId:c1._id}]
+| .forEach(x=>d.studentCourseEnrollments.updateOne({studentId:x.studentId,courseId:x.courseId},{$set:x},{upsert:true}));
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.studentCourseEnrollments.createIndex({studentId:1,courseId:1},{unique:true,name:"uq_student_course_pair"});
+| print("One-to-one $lookup:");
+One-to-one $lookup:
+
+Atlas atlas-13bbgo-shard-0 [primary] test> printjson(d.referenceStudents.aggregate([{$match:{studentId:"ESX-REF-001"}},{$lookup:{from:"identityProfiles",localField:"_id",foreignField:"studentId",as:"identityProfile"}}]).toArray());
+[
+  {
+    _id: ObjectId('6ae4536d027be0caf905b88f'),
+    studentId: 'ESX-REF-001',
+    name: 'Ishaan Gupta',
+    identityProfile: [
+      {
+        _id: ObjectId('6ae4538a027be0caf905b898'),
+        studentId: ObjectId('6ae4536d027be0caf905b88f'),
+        referenceCode: 'DEMO-VERIFY-001',
+        verificationStatus: 'PENDING',
+        verificationType: 'INSTITUTION_ID'
+      }
+    ]
+  }
+]
+
+Atlas atlas-13bbgo-shard-0 [primary] test> print("One-to-many $lookup:");
+One-to-many $lookup:
+
+Atlas atlas-13bbgo-shard-0 [primary] test> printjson(d.oneToManyStudents.aggregate([{$match:{studentId:"ESX-1M-001"}},{$lookup:{from:"oneToManyEnrollments",localField:"_id",foreignField:"studentId",as:"enrollments"}}]).toArray());
+[
+  {
+    _id: ObjectId('6ae453a8027be0caf905b89a'),
+    studentId: 'ESX-1M-001',
+    name: 'Riya Kapoor',
+    enrollments: [
+      {
+        _id: ObjectId('6ae453c3027be0caf905b8a1'),
+        courseCode: 'MONGO-101',
+        studentId: ObjectId('6ae453a8027be0caf905b89a'),
+        courseName: 'MongoDB',
+        semester: 5
+      },
+      {
+        _id: ObjectId('6ae453c3027be0caf905b8a2'),
+        studentId: ObjectId('6ae453a8027be0caf905b89a'),
+        courseCode: 'JAVA-201',
+        courseName: 'Java',
+        semester: 5
+      },
+      {
+        _id: ObjectId('6ae453c3027be0caf905b8a3'),
+        courseCode: 'NET-301',
+        studentId: ObjectId('6ae453a8027be0caf905b89a'),
+        courseName: 'Computer Networks',
+        semester: 5
+      }
+    ]
+  }
+]
+
+Atlas atlas-13bbgo-shard-0 [primary] test> print("Many-to-many courses for Priya:");
+Many-to-many courses for Priya:
+
+Atlas atlas-13bbgo-shard-0 [primary] test> printjson(d.studentCourseEnrollments.aggregate([{$match:{studentId:p._id}},{$lookup:{from:"practiceCourses",localField:"courseId",foreignField:"_id",as:"course"}},{$unwind:"$course"},{$project:{_id:0,courseCode:"$course.courseCode",courseName:"$course.courseName"}}]).toArray());
+[
+  {
+    courseCode: 'DB-101',
+    courseName: 'Database Systems'
+  },
+  {
+    courseCode: 'CYBER-201',
+    courseName: 'Cybersecurity'
+  }
+]
+
+Atlas atlas-13bbgo-shard-0 [primary] test> print("ALL PRACTICE COLLECTIONS:");
+ALL PRACTICE COLLECTIONS:
+
+Atlas atlas-13bbgo-shard-0 [primary] test> printjson(d.getCollectionNames().sort());
+[
+  'backupRecords',
+  'courses',
+  'crudDeleteDemo',
+  'embeddedStudents',
+  'enrollments',
+  'identityProfiles',
+  'indexingDemo',
+  'indexingUniqueDemo',
+  'manyStudents',
+  'oneToManyEnrollments',
+  'oneToManyStudents',
+  'practiceCourses',
+  'referenceStudents',
+  'studentCourseEnrollments',
+  'students',
+  'writeConcernDemo'
+]
+
+Atlas atlas-13bbgo-shard-0 [primary] test>

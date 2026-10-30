@@ -1,0 +1,94 @@
+Microsoft Windows [Version 10.0.26200.8524]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Bhanu Kiran>mongosh "mongodb+srv://theghostofchernobyl1_db_user:@edushieldx-cluster.2u3bpk2.mongodb.net/"
+Current Mongosh Log ID: 6ae44f932a98b287da84c63b
+Connecting to:          mongodb+srv://<credentials>@edushieldx-cluster.2u3bpk2.mongodb.net/?appName=mongosh+2.10.0
+Using MongoDB:          8.0.34
+Using Mongosh:          2.10.0
+mongosh 2.14.0 is available for download: https://www.mongodb.com/try/download/shell
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+
+ // DAY 4 — BASIC CRUD (student, course, enrollment)
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.students.updateOne({studentId:"ESX-STU-001"},{$set:{studentId:"ESX-STU-001",name:"Aarav Sharma",department:"Computer Science",semester:5,email:"aarav.demo@example.com",status:"ACTIVE"}},{upsert:true});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae451c8027be0caf905b888'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> d.courses.updateOne({courseCode:"ESX-MDB-101"},{$set:{courseCode:"ESX-MDB-101",courseName:"MongoDB Fundamentals",credits:4}},{upsert:true});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae451d3027be0caf905b889'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> const stu = d.students.findOne({studentId:"ESX-STU-001"});
+
+Atlas atlas-13bbgo-shard-0 [primary] test> const crs = d.courses.findOne({courseCode:"ESX-MDB-101"});
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.enrollments.updateOne({studentId:stu._id,courseId:crs._id},{$set:{studentId:stu._id,courseId:crs._id,ssemester:5,status:"ACTIVE",enrolledAt:new Date()}},{upsert:true});
+|
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae451f4027be0caf905b88b'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> print("CREATE/READ student:"); printjson(d.students.findOne({studentId:"ESX-STU-001"}));
+CREATE/READ student:
+{
+  _id: ObjectId('6ae451c8027be0caf905b888'),
+  studentId: 'ESX-STU-001',
+  department: 'Computer Science',
+  email: 'aarav.demo@example.com',
+  name: 'Aarav Sharma',
+  semester: 5,
+  status: 'ACTIVE'
+}
+
+Atlas atlas-13bbgo-shard-0 [primary] test> print("READ course:"); printjson(d.courses.findOne({courseCode:"ESX-MDB-101"}));
+READ course:
+{
+  _id: ObjectId('6ae451d3027be0caf905b889'),
+  courseCode: 'ESX-MDB-101',
+  courseName: 'MongoDB Fundamentals',
+  credits: 4
+}
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.students.updateOne({studentId:"ESX-STU-001"},{$set:{semester:6}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> print("UPDATE student:"); printjson(d.students.findOne({studentId:"ESX-STU-001"}));
+UPDATE student:
+{
+  _id: ObjectId('6ae451c8027be0caf905b888'),
+  studentId: 'ESX-STU-001',
+  department: 'Computer Science',
+  email: 'aarav.demo@example.com',
+  name: 'Aarav Sharma',
+  semester: 6,
+  status: 'ACTIVE'
+}
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.crudDeleteDemo.insertOne({demoId:"DELETE-ME",note:"Disposable delete demonstration"});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae4531a2a98b287da84c63e')
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> d.crudDeleteDemo.deleteOne({demoId:"DELETE-ME"});
+{ acknowledged: true, deletedCount: 1 }
+Atlas atlas-13bbgo-shard-0 [primary] test> print("DELETE demo completed; main records retained.");
+DELETE demo completed; main records retained.

@@ -1,0 +1,132 @@
+Microsoft Windows [Version 10.0.26200.8524]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Bhanu Kiran>mongosh "mongodb+srv://theghostofchernobyl1_db_user:@edushieldx-cluster.2u3bpk2.mongodb.net/"
+Current Mongosh Log ID: 6ae44f932a98b287da84c63b
+Connecting to:          mongodb+srv://<credentials>@edushieldx-cluster.2u3bpk2.mongodb.net/?appName=mongosh+2.10.0
+Using MongoDB:          8.0.34
+Using Mongosh:          2.10.0
+mongosh 2.14.0 is available for download: https://www.mongodb.com/try/download/shell
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.students.createIndex({studentstudentId:1},{unique:true,name:"uq_studentId"});
+ReferenceError: d is not defined
+Atlas atlas-13bbgo-shard-0 [primary] test> const d = db.getSiblingDB("EduShieldXPracticeDB");
+| print("PRACTICE DATABASE: " + d.getName());
+PRACTICE DATABASE: EduShieldXPracticeDB
+
+Atlas atlas-13bbgo-shard-0 [primary] test> d.students.createIndex({sstudentId:1},{unique:true,name:"uq_studentId"});
+uq_studentId
+Atlas atlas-13bbgo-shard-0 [primary] test> d.enrollments.createIndex({studentId:1,semester:1},{name:"ix_student_semester"});
+ix_student_semester
+Atlas atlas-13bbgo-shard-0 [primary] test> d.courses.createIndex({cocourseCode:1},{unique:true,name:"uq_courseCode"});
+uq_courseCode
+Atlas atlas-13bbgo-shard-0 [primary] test> d.indexingDemo.updateOne({demoId:"IDX-001"},{$set:{demoId:Atlas atlasAtlas atAtlas atlas-13bbgo-shaAtlasAtlas atlas-13bbgo-shard-0 [primary] test> d.indexingDemo.updateOne({demoId:"IDX-001"},{$set:{demoId:"IDX-001",title:"Network Security Lab",tags:["IoT","MongoDB","Security"]}},{upsert:true});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ae45049027be0caf905b883'),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+Atlas atlas-13bbgo-shard-0 [primary] test> d.indexingDemo.createIndex({tags:1},{name:"ix_tags_multikey"});
+ix_tags_multikey
+Atlas atlas-13bbgo-shard-0 [primary] test> try {
+|   d.indexingUniqueDemo.createIndex({code:1},{unique:true,name:"uq_demo_code"});
+|   d.indexingUniqueDemo.updateOne({code:"DUP-1"},{$set:{code:"DUP-1",label:"First"}},{upsert:true});
+|   d.indexingUniqueDemo.insertOne({code:"DUP-1",label:"Expected duplicate"});
+| } catch(e) { print("Expected unique-index error caught: " + e.message); }
+| try {
+|   d.students.createIndex({department:1},{name:"ix_department_hidden",hidden:true});
+|   print("Hidden index:"); printjson(d.students.getIndexes().filter(x=>x.name==="ix_department_hidden"));
+|   d.students.unhideIndex("ix_department_hidden");
+| } catch(e) { print("Hidden index unsupported or unavailable: " + e.message); }
+| print("Student indexes:"); printjson(d.students.getIndexes());
+| print("Enrollment query execution plan:");
+| printjson(d.enrollments.find({studentId:stu._id,semester:5}).explain("executionStats"));
+Expected unique-index error caught: E11000 duplicate key error collection: EduShieldXPracticeDB.indexingUniqueDemo index: uq_demo_code dup key: { code: "DUP-1" }
+Hidden index:
+[
+  {
+    v: 2,
+    key: {
+      department: 1
+    },
+    name: 'ix_department_hidden',
+    hidden: true
+  }
+]
+Student indexes:
+[
+  {
+    v: 2,
+    key: {
+      _id: 1
+    },
+    name: '_id_'
+  },
+  {
+    v: 2,
+    key: {
+      studentId: 1
+    },
+    name: 'uq_studentId',
+    unique: true
+  },
+  {
+    v: 2,
+    key: {
+      department: 1
+    },
+    name: 'ix_department_hidden'
+  }
+]
+Enrollment query execution plan:
+ReferenceError: stu is not defined
+Atlas atlas-13bbgo-shard-0 [primary] test> try {
+|   d.students.createIndex({department:1},{name:"ix_department_hidden",hidden:true});
+|   print("Hidden index:"); printjson(d.students.getIndexes().filter(x=>x.name==="ix_department_hidden"));
+|   d.students.unhideIndex("ix_department_hidden");
+| } catch(e) { print("Hidden index unsupported or unavailable: " + e.message); }
+Hidden index unsupported or unavailable: An equivalent index already exists with the same name but different options. Requested index: { v: 2, hidden: true, key: { department: 1 }, name: "ix_department_hidden" }, existing index: { v: 2, key: { department: 1 }, name: "ix_department_hidden" }
+
+Atlas atlas-13bbgo-shard-0 [primary] test> try {
+|   d.students.createIndex({department:1},{name:"ix_department_hidden",hidden:true});
+|   print("Hidden index:"); printjson(d.students.getIndexes().filter(x=>x.name==="ix_department_hidden"));
+|   d.students.unhideIndex("ix_department_hidden");
+| } catch(e) { print("Hidden index unsupported or unavailable: " + e.message); }
+| print("Student indexes:"); printjson(d.students.getIndexes());
+| print("Enrollment query execution plan:");
+| printjson(d.enrollments.find({studentId:stu._id,semester:5}).explain("executionStats"));
+Hidden index unsupported or unavailable: An equivalent index already exists with the same name but different options. Requested index: { v: 2, hidden: true, key: { department: 1 }, name: "ix_department_hidden" }, existing index: { v: 2, key: { department: 1 }, name: "ix_department_hidden" }
+Student indexes:
+[
+  {
+    v: 2,
+    key: {
+      _id: 1
+    },
+    name: '_id_'
+  },
+  {
+    v: 2,
+    key: {
+      studentId: 1
+    },
+    name: 'uq_studentId',
+    unique: true
+  },
+  {
+    v: 2,
+    key: {
+      department: 1
+    },
+    name: 'ix_department_hidden'
+  }
+]
+Enrollment query execution plan:
+ReferenceError: stu is not defined
+
+
+
